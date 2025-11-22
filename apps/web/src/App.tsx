@@ -129,8 +129,9 @@ const App = () => {
   const activeCard = filteredCards[filteredCards.length - 1];
 
   return (
-    <div className="min-h-screen w-full bg-transparent px-4 py-10 text-white">
-      <Sidebar
+    <AuthGuard>
+      <div className="min-h-screen w-full bg-transparent px-4 py-10 text-white">
+        <Sidebar
         swipedLists={swipedLists}
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
@@ -159,7 +160,7 @@ const App = () => {
           ))}
         </div>
 
-        <div className="fixed right-6 top-10 z-20">
+        <div className="fixed right-6 top-24 z-20">
           <div className="relative">
             <button
               className={`rounded-full px-4 py-2 text-xs font-semibold transition ${
@@ -277,7 +278,7 @@ const App = () => {
         onDismiss={dismissPending}
         isSubmitting={isConfirming}
       />
-      </div>
+    </div>
     </AuthGuard>
   );
 };
