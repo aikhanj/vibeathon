@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { NormalizedEmail } from './types';
 
-const DEFAULT_DATA_PATH = 'data/mockEmails.json';
+const DEFAULT_DATA_PATH = '../../data/mockEmails.json';
 let cachedEmails: NormalizedEmail[] | null = null;
 
 interface RawEmail {

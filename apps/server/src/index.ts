@@ -5,7 +5,10 @@ import path from 'node:path';
 import dotenv from 'dotenv';
 import cardsRouter from './routes/cards';
 
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+// Load .env from project root (two levels up from apps/server/src)
+// This works regardless of where the process is started from
+const rootEnv = path.resolve(__dirname, '../../.env');
+dotenv.config({ path: rootEnv });
 
 const app = express();
 app.use(cors());
