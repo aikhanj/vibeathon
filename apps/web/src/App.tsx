@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ActionButtons } from './components/ActionButtons';
+import { AuthGuard } from './components/AuthGuard';
 import { PendingApplyPanel } from './components/PendingApplyPanel';
 import { Sidebar } from './components/Sidebar';
 import { TinderDeck } from './components/TinderDeck';
@@ -276,7 +277,8 @@ const App = () => {
         onDismiss={dismissPending}
         isSubmitting={isConfirming}
       />
-    </div>
+      </div>
+    </AuthGuard>
   );
 };
 

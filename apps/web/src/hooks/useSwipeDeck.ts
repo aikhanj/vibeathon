@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useAuth } from '@clerk/clerk-react';
 import { fetchCards, markApplied } from '../api/client';
 import type { EventCard, FilterOption, SwipeDirection, SwipedLists } from '../types';
 
 export const useSwipeDeck = () => {
+  const { getToken } = useAuth();
   const [cards, setCards] = useState<EventCard[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | undefined>();
@@ -20,14 +22,16 @@ export const useSwipeDeck = () => {
     setLoading(true);
     setError(undefined);
     try {
-      const data = await fetchCards(selectedFilter);
+      // Get Clerk session token - backend will extract Google OAuth token from Clerk
+      const token = await getToken();
+      const data = await fetchCards(selectedFilter, token);
       setCards(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load cards');
     } finally {
       setLoading(false);
     }
-  }, [filter]);
+  }, [filter, getToken]);
 
   useEffect(() => {
     loadCards(filter);
@@ -59,7 +63,9 @@ export const useSwipeDeck = () => {
     if (!pendingCard) return;
     try {
       setIsConfirming(true);
-      await markApplied(pendingCard.id);
+      // Get Clerk session token - backend will extract Google OAuth token from Clerk
+      const token = await getToken();
+      await markApplied(pendingCard.id, token);
       setAppliedIds((prev) => new Set(prev).add(pendingCard.id));
       setPendingCard(null);
     } catch (err) {
@@ -67,7 +73,7 @@ export const useSwipeDeck = () => {
     } finally {
       setIsConfirming(false);
     }
-  }, [pendingCard]);
+  }, [pendingCard, getToken]);
 
   const hasCards = useMemo(() => cards.length > 0, [cards]);
 

@@ -1,17 +1,25 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ClerkProvider } from '@clerk/clerk-react';
 import App from './App';
 import LandingPage from './pages/LandingPage';
 import './index.css';
 
+const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+if (!publishableKey) {
+  throw new Error(
+    'Missing VITE_CLERK_PUBLISHABLE_KEY environment variable.\n\n' +
+    'Please create a .env file in apps/web/ with:\n' +
+    'VITE_CLERK_PUBLISHABLE_KEY=pk_test_...\n\n' +
+    'Then restart your dev server (npm run dev / pnpm dev)',
+  );
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/swipe" element={<App />} />
-      </Routes>
-    </BrowserRouter>
+    <ClerkProvider publishableKey={publishableKey}>
+      <App />
+    </ClerkProvider>
   </StrictMode>,
 );

@@ -1,0 +1,86 @@
+[
+  {
+    "id": "mock-email-1",
+    "from": "TigerHacks <tigerhacks@princeton.edu>",
+    "subject": "🎉 TigerHacks 2024 - Princeton's Premier Hackathon",
+    "body": "Hey there!\n\nWe're excited to announce TigerHacks 2024, Princeton's biggest student hackathon! Join us for 24 hours of coding, workshops, and networking.\n\n📅 Date: December 8-9, 2024\n📍 Location: Friend Center, Princeton University\n💰 Prizes: $10,000+ in prizes\n\n🎟️ Apply now: https://docs.google.com/forms/d/e/1FAIpQLSexampleTigerHacks2024/viewform\n\nWhat to expect:\n- 24-hour hackathon\n- Free meals and snacks\n- Mentorship from industry professionals\n- Workshops on AI, Web3, and more\n- Amazing prizes!\n\nDon't miss out on this incredible opportunity!\n\nBest,\nThe TigerHacks Team",
+    "receivedAt": "2024-11-22T10:30:00Z",
+    "links": [
+      "https://docs.google.com/forms/d/e/1FAIpQLSexampleTigerHacks2024/viewform"
+    ]
+  },
+  {
+    "id": "mock-email-2",
+    "from": "Y Combinator <apply@ycombinator.com>",
+    "subject": "YC Winter 2025 Applications Open",
+    "body": "Hi Student Founder,\n\nApplications are now open for Y Combinator's Winter 2025 batch!\n\nY Combinator is a startup accelerator that has funded over 4,000 companies including Airbnb, Stripe, Dropbox, and Reddit.\n\n🚀 Program Details:\n- $500,000 investment\n- 3 months in Silicon Valley\n- Access to YC's network of founders and investors\n- Weekly office hours with YC partners\n\n📝 Apply here: https://docs.google.com/forms/d/e/1FAIpQLSexampleYCWinter2025/viewform\n\nDeadline: December 15, 2024\n\nEven if you're still in school, we encourage you to apply. Many successful YC companies were started by students.\n\nGood luck!\nY Combinator Team",
+    "receivedAt": "2024-11-22T09:15:00Z",
+    "links": [
+      "https://docs.google.com/forms/d/e/1FAIpQLSexampleYCWinter2025/viewform",
+      "https://www.ycombinator.com"
+    ]
+  },
+  {
+    "id": "mock-email-3",
+    "from": "Microsoft <careers@microsoft.com>",
+    "subject": "Microsoft Summer 2025 Internship Program",
+    "body": "Hello,\n\nMicrosoft is now accepting applications for our Summer 2025 Internship Program!\n\n🎯 Roles Available:\n- Software Engineering Intern\n- Product Management Intern\n- Data Science Intern\n- UX Design Intern\n\n💼 What We Offer:\n- Competitive salary ($8,000-$10,000/month)\n- Housing stipend\n- Mentorship from senior engineers\n- Real impact on products used by billions\n\n📍 Locations: Redmond, WA | New York, NY | San Francisco, CA\n\n🔗 Apply now: https://docs.google.com/forms/d/e/1FAIpQLSexampleMicrosoftIntern2025/viewform\n\nWe're looking for passionate students who want to make a difference. All majors welcome!\n\nBest regards,\nMicrosoft Recruiting Team",
+    "receivedAt": "2024-11-22T08:45:00Z",
+    "links": [
+      "https://docs.google.com/forms/d/e/1FAIpQLSexampleMicrosoftIntern2025/viewform"
+    ]
+  },
+  {
+    "id": "mock-email-4",
+    "from": "Princeton Entrepreneurship Club <pec@princeton.edu>",
+    "subject": "Startup Pitch Competition - $5,000 Prize",
+    "body": "Hi Princeton Students!\n\nThe Princeton Entrepreneurship Club is hosting our annual Startup Pitch Competition.\n\n🏆 Grand Prize: $5,000\n🥈 Runner-up: $2,000\n🥉 Third Place: $1,000\n\nThis is your chance to pitch your startup idea to real investors and entrepreneurs.\n\n📅 Event Date: January 15, 2025\n📍 Location: McCosh Hall\n\n✅ Eligibility: All Princeton students\n✅ Team size: 1-4 members\n✅ Any industry/vertical\n\n📝 Register your team: https://docs.google.com/forms/d/e/1FAIpQLSexamplePECPitchCompetition/viewform\n\nDeadline to register: December 20, 2024\n\nDon't have a team? We'll help you find co-founders at our mixer on December 1st.\n\nSee you there!\nPEC Team",
+    "receivedAt": "2024-11-21T16:20:00Z",
+    "links": [
+      "https://docs.google.com/forms/d/e/1FAIpQLSexamplePECPitchCompetition/viewform"
+    ]
+  },
+  {
+    "id": "mock-email-5",
+    "from": "Google Developers <developers@google.com>",
+    "subject": "Google Solution Challenge 2025",
+    "body": "Hello Developer!\n\nWe're excited to announce the Google Solution Challenge 2025!\n\nBuild a solution using Google technologies that addresses one or more of the United Nations' 17 Sustainable Development Goals.\n\n🌍 Impact Areas:\n- No Poverty\n- Zero Hunger\n- Good Health and Well-being\n- Quality Education\n- And 13 more...\n\n🎁 Prizes:\n- Grand Prize: $3,000 + Mentorship\n- Top 50: Google swag + Cloud credits\n- Top 10: Trip to Google I/O\n\n📱 Required: Use Google Cloud, Firebase, Android, or other Google tech\n\n👥 Team size: 1-4 students\n\n🔗 Register your team: https://docs.google.com/forms/d/e/1FAIpQLSexampleGoogleSolutionChallenge/viewform\n\nSubmission deadline: March 31, 2025\n\nLet's build for good!\nGoogle Developer Student Clubs",
+    "receivedAt": "2024-11-21T14:00:00Z",
+    "links": [
+      "https://docs.google.com/forms/d/e/1FAIpQLSexampleGoogleSolutionChallenge/viewform",
+      "https://developers.google.com/community/gdsc-solution-challenge"
+    ]
+  },
+  {
+    "id": "mock-email-6",
+    "from": "HackMIT <team@hackmit.org>",
+    "subject": "HackMIT 2024 - Applications Now Open!",
+    "body": "Hey Hacker!\n\nHackMIT is back and better than ever! Join us for MIT's premier hackathon.\n\n📅 September 14-15, 2024\n📍 MIT Campus, Cambridge, MA\n🎟️ 100% Free (including travel reimbursement!)\n\n✨ Why HackMIT?\n- $50,000+ in prizes\n- Speakers from top tech companies\n- 24-hour hacking marathon\n- Free food, swag, and fun\n- Meet amazing people from around the world\n\n🎯 Tracks:\n- AI/ML\n- Social Good\n- Fintech\n- Hardware\n- Open\n\n📝 Apply now: https://docs.google.com/forms/d/e/1FAIpQLSexampleHackMIT2024/viewform\n\nRolling admissions - apply early!\n\nCan't wait to see what you build!\nHackMIT Team",
+    "receivedAt": "2024-11-21T11:30:00Z",
+    "links": [
+      "https://docs.google.com/forms/d/e/1FAIpQLSexampleHackMIT2024/viewform",
+      "https://hackmit.org"
+    ]
+  },
+  {
+    "id": "mock-email-7",
+    "from": "Kleiner Perkins <fellows@kleinerperkins.com>",
+    "subject": "Kleiner Perkins Fellows Program - Summer 2025",
+    "body": "Dear Student,\n\nThe Kleiner Perkins Fellows Program connects top engineering students with the most promising startups in Silicon Valley.\n\n🚀 Program Highlights:\n- Work at a KP portfolio company (Stripe, DoorDash, etc.)\n- Exclusive networking events with founders and VCs\n- Housing in San Francisco\n- Competitive salary + equity\n\n👥 Community:\n- Join 800+ KP Fellows alumni network\n- Weekly dinners with founders\n- Workshops on startups, VC, and careers\n\n📍 Location: San Francisco Bay Area\n⏰ Duration: 12 weeks (June - August 2025)\n\n🔗 Application: https://docs.google.com/forms/d/e/1FAIpQLSexampleKPFellows2025/viewform\n\nDeadline: January 10, 2025\n\nLooking for ambitious students ready to dive into the startup world.\n\nBest,\nKP Fellows Team",
+    "receivedAt": "2024-11-20T13:45:00Z",
+    "links": [
+      "https://docs.google.com/forms/d/e/1FAIpQLSexampleKPFellows2025/viewform"
+    ]
+  },
+  {
+    "id": "mock-email-8",
+    "from": "Princeton CS Department <cs-info@cs.princeton.edu>",
+    "subject": "COS 333 - Advanced Programming Techniques - Spring 2025",
+    "body": "Hello Princeton Students,\n\nRegistration for COS 333: Advanced Programming Techniques is now open for Spring 2025!\n\n📚 Course Overview:\n- Build real-world web applications\n- Learn modern frameworks (React, Node.js, SQL)\n- Work on team projects\n- Guest lectures from industry professionals\n\n👨‍🏫 Instructor: Professor Robert Dondero\n📅 Time: MW 1:30-2:50 PM\n📍 Location: Friend Center 101\n\n✅ Prerequisites: COS 217 or COS 226\n\n🎯 What You'll Build:\n- Full-stack web application\n- Database design and implementation\n- RESTful APIs\n- Deployment to cloud platforms\n\n📝 Course lottery form: https://docs.google.com/forms/d/e/1FAIpQLSexampleCOS333Spring2025/viewform\n\nDeadline: November 30, 2024\n\nThis course fills up quickly - apply early!\n\nSincerely,\nPrinceton CS Department",
+    "receivedAt": "2024-11-20T10:00:00Z",
+    "links": [
+      "https://docs.google.com/forms/d/e/1FAIpQLSexampleCOS333Spring2025/viewform"
+    ]
+  }
+]
+
