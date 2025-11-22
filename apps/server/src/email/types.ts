@@ -15,4 +15,5 @@ export interface ClassificationResult {
   eventDate?: string;
   location?: string;
   summary?: string;
+  googleFormUrl?: string;
 }

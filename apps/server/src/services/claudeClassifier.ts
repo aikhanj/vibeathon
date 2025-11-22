@@ -29,6 +29,10 @@ const parseClassification = (text: string, fallback: ClassificationResult): Clas
       eventDate: typeof parsed.eventDate === 'string' ? parsed.eventDate : fallback.eventDate,
       location: typeof parsed.location === 'string' ? parsed.location : fallback.location,
       summary: typeof parsed.summary === 'string' ? parsed.summary : fallback.summary,
+      googleFormUrl:
+        typeof parsed.googleFormUrl === 'string' && parsed.googleFormUrl !== 'null'
+          ? parsed.googleFormUrl
+          : fallback.googleFormUrl,
     };
     return result;
   } catch {
@@ -43,13 +47,16 @@ Classify the email strictly as JSON with this shape:
   "eventDate": "<month day or date range>",
   "location": "City or virtual",
   "tags": ["keyword", ...],
-  "summary": "short 1 sentence summary"
+  "summary": "short 1 sentence summary",
+  "googleFormUrl": "<full Google Form URL if present, otherwise null>"
 }
+IMPORTANT: Look for Google Forms links (https://docs.google.com/forms/...) in the email body or links. Extract the complete URL if found.
 Email metadata:
 From: ${email.from}
 Subject: ${email.subject}
 Body:
-${email.body}`;
+${email.body}
+Links found: ${email.links.join(', ')}`;
 
 const buildCacheKey = (email: NormalizedEmail): string =>
   crypto.createHash('sha1').update(`${email.id}|${email.subject}|${email.body}`).digest('hex');
