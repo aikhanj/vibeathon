@@ -3,6 +3,7 @@ import express from 'express';
 import morgan from 'morgan';
 import path from 'node:path';
 import dotenv from 'dotenv';
+import { clerkMiddleware, requireAuth } from '@clerk/express';
 import cardsRouter from './routes/cards';
 
 // Load .env from project root (two levels up from apps/server/src)
@@ -14,6 +15,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+
+// Initialize Clerk middleware
+const clerkSecretKey = process.env.CLERK_SECRET_KEY;
+if (clerkSecretKey) {
+  app.use(clerkMiddleware({ secretKey: clerkSecretKey }));
+}
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', time: new Date().toISOString() });

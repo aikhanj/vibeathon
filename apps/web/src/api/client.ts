@@ -10,15 +10,27 @@ export const apiClient = axios.create({
   },
 });
 
-export const fetchCards = async (filter?: FilterOption): Promise<EventCard[]> => {
+export const fetchCards = async (filter?: FilterOption, token?: string | null): Promise<EventCard[]> => {
   const params = filter && filter !== 'all' ? { type: filter } : undefined;
-  const { data } = await apiClient.get<{ data: EventCard[] }>('/api/cards', { params });
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+  const { data } = await apiClient.get<{ data: EventCard[] }>('/api/cards', { params, headers });
   return data.data;
 };
 
-export const markApplied = async (id: string): Promise<ApplyResponse> => {
-  const { data } = await apiClient.post<ApplyResponse>(`/api/cards/${id}/apply`, {
-    status: 'applied',
-  });
+export const markApplied = async (id: string, token?: string | null): Promise<ApplyResponse> => {
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+  const { data } = await apiClient.post<ApplyResponse>(
+    `/api/cards/${id}/apply`,
+    {
+      status: 'applied',
+    },
+    { headers },
+  );
   return data;
 };

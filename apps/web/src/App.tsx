@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ActionButtons } from './components/ActionButtons';
+import { AuthGuard } from './components/AuthGuard';
 import { PendingApplyPanel } from './components/PendingApplyPanel';
 import { TinderDeck } from './components/TinderDeck';
 import { useSwipeDeck } from './hooks/useSwipeDeck';
@@ -36,8 +37,9 @@ const App = () => {
   const activeCard = cards[cards.length - 1];
 
   return (
-    <div className="min-h-screen w-full bg-transparent px-4 py-10 text-white">
-      <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
+    <AuthGuard>
+      <div className="min-h-screen w-full bg-transparent px-4 py-10 text-white">
+        <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -113,7 +115,8 @@ const App = () => {
         onDismiss={dismissPending}
         isSubmitting={isConfirming}
       />
-    </div>
+      </div>
+    </AuthGuard>
   );
 };
 
