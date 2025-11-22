@@ -66,8 +66,13 @@ const fallbackClassify = (email: NormalizedEmail): ClassificationResult => {
   };
 };
 
-export const buildCardFromEmail = async (email: NormalizedEmail): Promise<EventCard> => {
+export const buildCardFromEmail = async (email: NormalizedEmail): Promise<EventCard | null> => {
   const meta = await classifyWithClaude(email, fallbackClassify);
+  
+  // If Claude says to skip this email, return null
+  if (meta.skip) {
+    return null;
+  }
   
   // Prioritize Google Form URL from classification, then from extracted links, then fallback
   const googleForms = extractGoogleForms(email.body, email.links);

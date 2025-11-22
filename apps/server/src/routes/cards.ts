@@ -59,21 +59,19 @@ const loadCards = async (accessToken?: string): Promise<EventCard[]> => {
 
   const cards = await Promise.all(emails.map((email) => buildCardFromEmail(email)));
   
-  // Filter to only include cards with Google Forms
-  const cardsWithGoogleForms = cards.filter((card) =>
-    card.applyLink && card.applyLink.includes('docs.google.com/forms/'),
-  );
+  // Filter out skipped emails (null values from Claude classification)
+  const validCards = cards.filter((card): card is EventCard => card !== null);
   
-  cardsWithGoogleForms.sort(
+  validCards.sort(
     (a, b) => new Date(b.receivedAt).getTime() - new Date(a.receivedAt).getTime(),
   );
 
   // Only cache if not using access tokens
   if (!accessToken) {
-    cachedCards = cardsWithGoogleForms;
+    cachedCards = validCards;
     cacheExpiresAt = now + CARD_CACHE_TTL_MS;
   }
-  return cardsWithGoogleForms;
+  return validCards;
 };
 
 // Optional auth middleware - only enforce if Clerk is configured

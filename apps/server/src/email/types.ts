@@ -15,5 +15,6 @@ export interface ClassificationResult {
   eventDate?: string;
   location?: string;
   summary?: string;
+  skip?: boolean; // If true, this email should be ignored (not an event or club)
   googleFormUrl?: string;
 }

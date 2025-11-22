@@ -11,19 +11,23 @@ Clerk handles user authentication, but doesn't always expose OAuth provider toke
 ### Step 1: Google Cloud Console Setup
 
 1. **Go to [Google Cloud Console](https://console.cloud.google.com/)**
+
    - Sign in with your Google account
 
 2. **Create or Select a Project**
+
    - Click the project dropdown at the top
    - Create a new project or select an existing one
    - Note: You can reuse the same project you used for Clerk
 
 3. **Enable Gmail API**
+
    - Navigate to **APIs & Services** > **Library**
    - Search for "Gmail API"
    - Click **Enable**
 
 4. **Configure OAuth Consent Screen**
+
    - Go to **APIs & Services** > **OAuth consent screen**
    - Choose **External** (unless you have Google Workspace)
    - Fill in required fields:
@@ -65,16 +69,20 @@ GMAIL_USER_EMAIL=your_email@gmail.com
 
 1. Make sure you've added `GMAIL_CLIENT_ID` and `GMAIL_CLIENT_SECRET` to your `.env` file
 2. Run the script:
+
    ```bash
    cd apps/server
    pnpm get-refresh-token
    ```
+
    Or from the project root:
+
    ```bash
    pnpm --filter server get-refresh-token
    ```
 
 3. Follow the prompts:
+
    - The script will print a URL - **copy and visit it in your browser**
    - Sign in with your Google account
    - Grant permission for Gmail read-only access
@@ -104,11 +112,13 @@ GMAIL_USER_EMAIL=your_email@gmail.com
 ### Step 4: Verify Setup
 
 1. **Restart your server**:
+
    ```bash
    pnpm dev:server
    ```
 
 2. **Check the logs** - you should see:
+
    - No "Gmail API not configured" errors
    - Gmail emails being fetched (if you have any)
 
@@ -125,6 +135,7 @@ The system uses a **fallback chain**:
 3. **If that fails**: Fall back to mock data
 
 This means:
+
 - ✅ Authenticated users get their own Gmail data (via Clerk)
 - ✅ Server can fetch Gmail even without user authentication (via refresh token)
 - ✅ Development works with mock data if neither is configured
@@ -132,23 +143,28 @@ This means:
 ## Troubleshooting
 
 ### "Gmail API not configured" error
+
 - Check that all four variables are set: `GMAIL_CLIENT_ID`, `GMAIL_CLIENT_SECRET`, `GMAIL_REFRESH_TOKEN`, `GMAIL_USER_EMAIL`
 
 ### "Invalid credentials" error
+
 - Verify your Client ID and Client Secret are correct
 - Make sure there are no extra spaces in your `.env` file
 - Try regenerating the refresh token
 
 ### "Access denied" error
+
 - Make sure you added your email as a test user in OAuth consent screen
 - If your app is in "Testing" mode, only test users can authorize
 
 ### "No refresh token received"
+
 - This happens if you've already authorized the app before
 - Revoke access at: https://myaccount.google.com/permissions
 - Then run the script again
 
 ### Redirect URI mismatch
+
 - Make sure the redirect URI in Google Cloud Console matches exactly: `http://localhost:4000/oauth2callback`
 - No trailing slashes!
 
@@ -162,9 +178,9 @@ This means:
 ## Next Steps
 
 Once set up, your server will automatically:
+
 - Use Clerk tokens when available (user-specific)
 - Fall back to server-side OAuth (shared account)
 - Use mock data if neither works
 
 You're all set! 🎉
-

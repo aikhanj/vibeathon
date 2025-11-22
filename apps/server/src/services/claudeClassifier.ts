@@ -29,6 +29,7 @@ const parseClassification = (text: string, fallback: ClassificationResult): Clas
       eventDate: typeof parsed.eventDate === 'string' ? parsed.eventDate : fallback.eventDate,
       location: typeof parsed.location === 'string' ? parsed.location : fallback.location,
       summary: typeof parsed.summary === 'string' ? parsed.summary : fallback.summary,
+      skip: typeof parsed.skip === 'boolean' ? parsed.skip : false,
       googleFormUrl:
         typeof parsed.googleFormUrl === 'string' && parsed.googleFormUrl !== 'null'
           ? parsed.googleFormUrl
@@ -43,6 +44,7 @@ const parseClassification = (text: string, fallback: ClassificationResult): Clas
 const buildPrompt = (email: NormalizedEmail) => `You are triaging inbox opportunities for Gen Z founders.
 Classify the email strictly as JSON with this shape:
 {
+  "skip": true | false,
   "type": "event" | "club",
   "eventDate": "<month day or date range>",
   "location": "City or virtual",
@@ -50,7 +52,18 @@ Classify the email strictly as JSON with this shape:
   "summary": "short 1 sentence summary",
   "googleFormUrl": "<full Google Form URL if present, otherwise null>"
 }
-IMPORTANT: Look for Google Forms links (https://docs.google.com/forms/...) in the email body or links. Extract the complete URL if found.
+
+IMPORTANT RULES:
+1. Set "skip" to true if the email is NOT about an event, club, fellowship, scholarship, hackathon, meetup, or similar opportunity. Examples of emails to skip:
+   - Regular newsletters
+   - Promotional emails
+   - Personal correspondence
+   - Transactional emails
+   - Spam
+2. Set "skip" to false ONLY if it's a real event or club opportunity
+3. If skip is false, classify as "event" for one-time events or "club" for ongoing communities
+4. Look for Google Forms links (https://docs.google.com/forms/...) in the email body or links. Extract the complete URL if found.
+
 Email metadata:
 From: ${email.from}
 Subject: ${email.subject}
