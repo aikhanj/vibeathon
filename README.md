@@ -50,3 +50,13 @@ pnpm -r lint                # Runs ESLint in every workspace
 - `docs/extension-notes.md` — outlines the browser-extension automation concept
 
 Future steps include swapping the mock Gmail loader with real Gmail OAuth ingestion and persisting cards in storage so the swipe history survives refreshes. The current codebase is structured to make that upgrade straightforward.
+
+
+
+To get started:
+Install dependencies:
+pnpm install
+Copy .env.example to .env and set VITE_API_BASE_URL=http://localhost:4000
+Start dev servers:
+pnpm dev:server   # Terminal 1 - API on :4000
+pnpm dev:web      # Terminal 2 - Frontend on :5173
