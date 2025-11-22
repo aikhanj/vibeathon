@@ -61,7 +61,7 @@ export const TinderDeck = ({ cards, onSwipe, scheduledIds }: Props) => {
   return (
     <div className="relative flex h-[520px] w-full max-w-md items-center justify-center">
       {stack.map((card, index) => (
-        <div key={card.id} className="absolute inset-0 flex items-center justify-center">
+        <div key={card.id} className="absolute inset-0 flex items-center justify-center select-none">
           <TinderCard
             // @ts-expect-error react-tinder-card types incorrectly use React.FC
             ref={setCardRef(card.id)}

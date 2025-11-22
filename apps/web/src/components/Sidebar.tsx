@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import type { SwipedLists, EventCard } from '../types';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
   isOpen: boolean;
   onToggle: () => void;
   onClearList: (listKey: TabKey) => void;
+  onRemoveCard: (listKey: TabKey, cardId: string) => void;
 }
 
 export type TabKey = 'interested' | 'notInterested' | 'reviewLater';
@@ -17,22 +19,38 @@ const TABS: Array<{ key: TabKey; label: string }> = [
   { key: 'reviewLater', label: 'Review Later' },
 ];
 
-const CardItem = ({ card }: { card: EventCard }) => (
-  <a
-    href={card.applyLink}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="block rounded-lg border border-white/10 bg-white/5 p-3 transition hover:bg-white/10"
-  >
-    <p className="text-sm font-medium text-white truncate">{card.subject}</p>
-    <p className="mt-1 text-xs text-slate-400 truncate">{card.sender}</p>
-    <span className="mt-2 inline-block rounded-full bg-white/10 px-2 py-0.5 text-xs text-slate-300 capitalize">
-      {card.type}
-    </span>
-  </a>
+const CardItem = ({ card, onRemove }: { card: EventCard; onRemove: () => void }) => (
+  <div className="relative rounded-lg border border-white/10 bg-white/5 p-3 transition hover:bg-white/10">
+    <Link to="/apply" className="block">
+      <p className="text-sm font-medium text-white truncate pr-6">{card.subject}</p>
+      <p className="mt-1 text-xs text-slate-400 truncate">{card.sender}</p>
+      <span className="mt-2 inline-block rounded-full bg-white/10 px-2 py-0.5 text-xs text-slate-300 capitalize">
+        {card.type}
+      </span>
+    </Link>
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        onRemove();
+      }}
+      className="absolute right-2 top-2 rounded-full p-1 text-slate-400 hover:bg-white/10 hover:text-white transition"
+      aria-label="Remove card"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="h-4 w-4"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
 );
 
-export const Sidebar = ({ swipedLists, isOpen, onToggle, onClearList }: Props) => {
+export const Sidebar = ({ swipedLists, isOpen, onToggle, onClearList, onRemoveCard }: Props) => {
   const [activeTab, setActiveTab] = useState<TabKey>('interested');
 
   const currentList = swipedLists[activeTab];
@@ -103,7 +121,11 @@ export const Sidebar = ({ swipedLists, isOpen, onToggle, onClearList }: Props) =
                 ) : (
                   <div className="space-y-2">
                     {currentList.map((card) => (
-                      <CardItem key={card.id} card={card} />
+                      <CardItem
+                        key={card.id}
+                        card={card}
+                        onRemove={() => onRemoveCard(activeTab, card.id)}
+                      />
                     ))}
                   </div>
                 )}

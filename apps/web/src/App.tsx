@@ -1,12 +1,13 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, Routes, Route } from 'react-router-dom';
 import { ActionButtons } from './components/ActionButtons';
 import { AuthGuard } from './components/AuthGuard';
 import { PendingApplyPanel } from './components/PendingApplyPanel';
 import { Sidebar } from './components/Sidebar';
 import { TinderDeck } from './components/TinderDeck';
 import { useSwipeDeck } from './hooks/useSwipeDeck';
+import ClubApplicationPage from './pages/ClubApplicationPage';
 import type { AtmosphereFilter, ClubTypeFilter, EventTypeFilter, FilterOption } from './types';
 
 const FILTERS: Array<{ label: string; value: FilterOption }> = [
@@ -67,6 +68,7 @@ const App = () => {
     appliedIds,
     swipedLists,
     clearSwipedList,
+    removeFromSwipedList,
   } = useSwipeDeck();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -129,14 +131,14 @@ const App = () => {
 
   const activeCard = filteredCards[filteredCards.length - 1];
 
-  return (
-    <AuthGuard>
-      <div className="min-h-screen w-full bg-transparent px-4 py-10 text-white">
-        <Sidebar
+  const mainContent = (
+    <div className="min-h-screen w-full bg-transparent px-4 py-10 text-white">
+      <Sidebar
         swipedLists={swipedLists}
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
         onClearList={clearSwipedList}
+        onRemoveCard={removeFromSwipedList}
       />
       <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
         <motion.div
@@ -255,7 +257,6 @@ const App = () => {
               <TinderDeck cards={filteredCards} onSwipe={swipe} scheduledIds={appliedIds} />
               <ActionButtons
                 disabled={!activeCard}
-                onSwipeLeft={() => activeCard && swipe('left', activeCard)}
                 onSwipeRight={() => activeCard && swipe('right', activeCard)}
               />
             </>
@@ -281,6 +282,14 @@ const App = () => {
         isSubmitting={isConfirming}
       />
     </div>
+  );
+
+  return (
+    <AuthGuard>
+      <Routes>
+        <Route path="/apply" element={<ClubApplicationPage />} />
+        <Route path="*" element={mainContent} />
+      </Routes>
     </AuthGuard>
   );
 };

@@ -881,6 +881,13 @@ export const useSwipeDeck = () => {
     }));
   }, []);
 
+  const removeFromSwipedList = useCallback((listKey: 'interested' | 'notInterested' | 'reviewLater', cardId: string) => {
+    setSwipedLists((prev) => ({
+      ...prev,
+      [listKey]: prev[listKey].filter((card) => card.id !== cardId),
+    }));
+  }, []);
+
   return {
     cards,
     loading,
@@ -897,5 +904,6 @@ export const useSwipeDeck = () => {
     hasCards,
     swipedLists,
     clearSwipedList,
+    removeFromSwipedList,
   };
 };
