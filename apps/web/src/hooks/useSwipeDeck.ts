@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 import { fetchCards, markApplied } from '../api/client';
-import type { EventCard, FilterOption, SwipeDirection } from '../types';
+import type { EventCard, FilterOption, SwipeDirection, SwipedLists } from '../types';
 
 export const useSwipeDeck = () => {
   const { getToken } = useAuth();
@@ -12,6 +12,11 @@ export const useSwipeDeck = () => {
   const [pendingCard, setPendingCard] = useState<EventCard | null>(null);
   const [isConfirming, setIsConfirming] = useState(false);
   const [appliedIds, setAppliedIds] = useState<Set<string>>(new Set());
+  const [swipedLists, setSwipedLists] = useState<SwipedLists>({
+    interested: [],
+    notInterested: [],
+    reviewLater: [],
+  });
 
   const loadCards = useCallback(async (selectedFilter: FilterOption = filter) => {
     setLoading(true);
@@ -35,8 +40,20 @@ export const useSwipeDeck = () => {
   const swipe = useCallback((direction: SwipeDirection, card: EventCard) => {
     setCards((prev) => prev.filter((item) => item.id !== card.id));
     if (direction === 'right') {
-      window.open(card.applyLink, '_blank', 'noopener');
-      setPendingCard(card);
+      setSwipedLists((prev) => ({
+        ...prev,
+        interested: [...prev.interested, card],
+      }));
+    } else if (direction === 'left') {
+      setSwipedLists((prev) => ({
+        ...prev,
+        notInterested: [...prev.notInterested, card],
+      }));
+    } else if (direction === 'up') {
+      setSwipedLists((prev) => ({
+        ...prev,
+        reviewLater: [...prev.reviewLater, card],
+      }));
     }
   }, []);
 
@@ -74,5 +91,6 @@ export const useSwipeDeck = () => {
     appliedIds,
     isConfirming,
     hasCards,
+    swipedLists,
   };
 };
