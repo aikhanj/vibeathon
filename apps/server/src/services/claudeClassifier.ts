@@ -1,5 +1,9 @@
 import crypto from 'node:crypto';
-import type { NormalizedEmail, ClassificationResult } from '../email/types';
+import type { NormalizedEmail, ClassificationResult, EventType, ClubType, Atmosphere } from '../email/types';
+
+const EVENT_TYPES: EventType[] = ['workshop', 'speaker', 'practice', 'social', 'competition', 'meeting'];
+const CLUB_TYPES: ClubType[] = ['academic', 'professional', 'sports', 'arts', 'cultural', 'volunteer', 'social', 'stem', 'entrepreneurship', 'media'];
+const ATMOSPHERES: Atmosphere[] = ['chill', 'high-energy', 'tight-knit', 'large-social', 'skill-building', 'just-for-fun'];
 
 const CLAUDE_ENDPOINT = 'https://api.anthropic.com/v1/messages';
 const DEFAULT_MODEL = 'claude-3-5-sonnet-20241022';
@@ -23,9 +27,32 @@ const sanitizeTags = (maybeTags: unknown, fallback: string[]): string[] => {
 const parseClassification = (text: string, fallback: ClassificationResult): ClassificationResult => {
   try {
     const parsed = JSON.parse(text);
+    const type = parsed.type === 'club' ? 'club' : 'event';
+
+    // Validate eventType
+    let eventType: EventType | undefined;
+    if (type === 'event' && typeof parsed.eventType === 'string' && EVENT_TYPES.includes(parsed.eventType as EventType)) {
+      eventType = parsed.eventType as EventType;
+    }
+
+    // Validate clubType
+    let clubType: ClubType | undefined;
+    if (type === 'club' && typeof parsed.clubType === 'string' && CLUB_TYPES.includes(parsed.clubType as ClubType)) {
+      clubType = parsed.clubType as ClubType;
+    }
+
+    // Validate atmosphere
+    let atmosphere: Atmosphere | undefined;
+    if (typeof parsed.atmosphere === 'string' && ATMOSPHERES.includes(parsed.atmosphere as Atmosphere)) {
+      atmosphere = parsed.atmosphere as Atmosphere;
+    }
+
     const result: ClassificationResult = {
-      type: parsed.type === 'club' ? 'club' : 'event',
+      type,
       tags: sanitizeTags(parsed.tags, fallback.tags),
+      eventType,
+      clubType,
+      atmosphere,
       eventDate: typeof parsed.eventDate === 'string' ? parsed.eventDate : fallback.eventDate,
       location: typeof parsed.location === 'string' ? parsed.location : fallback.location,
       summary: typeof parsed.summary === 'string' ? parsed.summary : fallback.summary,
@@ -46,6 +73,9 @@ Classify the email strictly as JSON with this shape:
 {
   "skip": true | false,
   "type": "event" | "club",
+  "eventType": "workshop" | "speaker" | "practice" | "social" | "competition" | "meeting" | null,
+  "clubType": "academic" | "professional" | "sports" | "arts" | "cultural" | "volunteer" | "social" | "stem" | "entrepreneurship" | "media" | null,
+  "atmosphere": "chill" | "high-energy" | "tight-knit" | "large-social" | "skill-building" | "just-for-fun" | null,
   "eventDate": "<month day or date range>",
   "location": "City or virtual",
   "tags": ["keyword", ...],
@@ -62,7 +92,32 @@ IMPORTANT RULES:
    - Spam
 2. Set "skip" to false ONLY if it's a real event or club opportunity
 3. If skip is false, classify as "event" for one-time events or "club" for ongoing communities
-4. Look for Google Forms links (https://docs.google.com/forms/...) in the email body or links. Extract the complete URL if found.
+4. For events, set "eventType" to the most appropriate category:
+   - workshop: hands-on learning sessions
+   - speaker: talks, panels, keynotes
+   - practice: rehearsals, training sessions
+   - social: casual gatherings, mixers, parties
+   - competition: hackathons, contests, tournaments
+   - meeting: general meetings, info sessions
+5. For clubs, set "clubType" to the most appropriate category:
+   - academic: study groups, honor societies
+   - professional: career-focused, networking
+   - sports: athletic clubs, fitness
+   - arts: music, theater, visual arts
+   - cultural: identity-based, international
+   - volunteer: community service
+   - social: casual interest groups
+   - stem: science, tech, engineering, math
+   - entrepreneurship: startups, business
+   - media: publications, broadcasting
+6. Set "atmosphere" based on the vibe:
+   - chill: low-key, relaxed
+   - high-energy: intense, exciting
+   - tight-knit: small, close community
+   - large-social: big events, lots of people
+   - skill-building: learning-focused
+   - just-for-fun: recreational
+7. Look for Google Forms links (https://docs.google.com/forms/...) in the email body or links. Extract the complete URL if found.
 
 Email metadata:
 From: ${email.from}

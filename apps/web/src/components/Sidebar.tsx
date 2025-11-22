@@ -6,9 +6,10 @@ interface Props {
   swipedLists: SwipedLists;
   isOpen: boolean;
   onToggle: () => void;
+  onClearList: (listKey: TabKey) => void;
 }
 
-type TabKey = 'interested' | 'notInterested' | 'reviewLater';
+export type TabKey = 'interested' | 'notInterested' | 'reviewLater';
 
 const TABS: Array<{ key: TabKey; label: string }> = [
   { key: 'interested', label: 'Interested' },
@@ -31,7 +32,7 @@ const CardItem = ({ card }: { card: EventCard }) => (
   </a>
 );
 
-export const Sidebar = ({ swipedLists, isOpen, onToggle }: Props) => {
+export const Sidebar = ({ swipedLists, isOpen, onToggle, onClearList }: Props) => {
   const [activeTab, setActiveTab] = useState<TabKey>('interested');
 
   const currentList = swipedLists[activeTab];
@@ -107,6 +108,16 @@ export const Sidebar = ({ swipedLists, isOpen, onToggle }: Props) => {
                   </div>
                 )}
               </div>
+
+              {/* Clear Button */}
+              {currentList.length > 0 && (
+                <button
+                  onClick={() => onClearList(activeTab)}
+                  className="mt-4 w-full rounded-lg bg-red-500/20 px-3 py-2 text-sm font-medium text-red-300 transition hover:bg-red-500/30"
+                >
+                  Clear {TABS.find(t => t.key === activeTab)?.label}
+                </button>
+              )}
             </div>
           </motion.aside>
         )}

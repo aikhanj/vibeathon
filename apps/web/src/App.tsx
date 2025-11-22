@@ -66,6 +66,7 @@ const App = () => {
     reload,
     appliedIds,
     swipedLists,
+    clearSwipedList,
   } = useSwipeDeck();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -135,6 +136,7 @@ const App = () => {
         swipedLists={swipedLists}
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
+        onClearList={clearSwipedList}
       />
       <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
         <motion.div
