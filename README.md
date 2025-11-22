@@ -122,4 +122,14 @@ The app supports three modes for email data:
 2. **Server-side Gmail**: Backend uses a refresh token to access a single Gmail account
 3. **Mock Data** (Fallback): Uses sample data from `data/mockEmails.json`
 
-The system automatically falls back through these options if authentication fails. See `CLERK_GOOGLE_OAUTH_INSTRUCTIONS.md` for full setup details.
+Future steps include swapping the mock Gmail loader with real Gmail OAuth ingestion and persisting cards in storage so the swipe history survives refreshes. The current codebase is structured to make that upgrade straightforward.
+
+
+
+To get started:
+Install dependencies:
+pnpm install
+Copy .env.example to .env and set VITE_API_BASE_URL=http://localhost:4000
+Start dev servers:
+pnpm dev:server   # Terminal 1 - API on :4000
+pnpm dev:web      # Terminal 2 - Frontend on :5173
