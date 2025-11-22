@@ -1,4 +1,4 @@
-import { CardCategory } from '../email/types';
+import { CardCategory, EventType, ClubType, Atmosphere } from '../email/types';
 
 export interface EventCard {
   id: string;
@@ -6,6 +6,9 @@ export interface EventCard {
   sender: string;
   preview: string;
   type: CardCategory;
+  eventType?: EventType;
+  clubType?: ClubType;
+  atmosphere?: Atmosphere;
   applyLink: string;
   eventDate?: string;
   location?: string;
