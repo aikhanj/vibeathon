@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+
+# Build artifacts
+dist/
+build/
+.next/
+.out/
+.cache/
+
+# Env
+.env
+.env.*
+apps/**/.env
+data/*.secrets.json
+
+# Logs
+*.log
+
+# Misc
+.DS_Store
+Thumbs.db

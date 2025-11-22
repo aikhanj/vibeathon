@@ -1,0 +1,30 @@
+[
+  {
+    "id": "evt-001",
+    "from": "Women Techmakers <events@wtm.org>",
+    "subject": "Apply: Women in AI Fellowship 2025",
+    "body": "Applications for the Women in AI Fellowship are now open! The kickoff summit happens March 12 in NYC. Complete your application at https://wtm.org/apply.",
+    "receivedAt": "2025-11-18T15:04:00.000Z"
+  },
+  {
+    "id": "evt-002",
+    "from": "GenZ Builders Club <hello@genzbuilders.club>",
+    "subject": "New product studio club accepting 15 members",
+    "body": "GenZ Builders Club is opening our winter cohort. Weekly meetups + demo day in SF. RSVP by Dec 1 at https://genzbuilders.club/apply",
+    "receivedAt": "2025-11-19T11:22:00.000Z"
+  },
+  {
+    "id": "evt-003",
+    "from": "She Leads Summit <hi@she-leads.com>",
+    "subject": "Early bird tickets for She Leads Summit",
+    "body": "Join 600+ founders at the She Leads Summit on January 24 in Austin. Secure your spot via https://she-leads.com/register",
+    "receivedAt": "2025-11-15T09:00:00.000Z"
+  },
+  {
+    "id": "evt-004",
+    "from": "DesignOps Collective <team@doc.club>",
+    "subject": "Meet the DOC club",
+    "body": "Our DesignOps Collective meets every Thursday evening virtually. Apply at https://doc.club/join",
+    "receivedAt": "2025-11-11T18:33:00.000Z"
+  }
+]
