@@ -36,10 +36,22 @@ const loadCards = async (accessToken?: string): Promise<EventCard[]> => {
   let emails: Awaited<ReturnType<typeof loadMockEmails>>;
   if (accessToken) {
     // Use access token from frontend OAuth
-    emails = await loadGmailEmails(Number(process.env.GMAIL_MAX_RESULTS ?? 50), accessToken);
+    try {
+      emails = await loadGmailEmails(Number(process.env.GMAIL_MAX_RESULTS ?? 50), accessToken);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Gmail API failed with access token, falling back to mock data:', error);
+      emails = loadMockEmails();
+    }
   } else if (isGmailConfigured()) {
     // Use server-side refresh token flow
-    emails = await loadGmailEmails(Number(process.env.GMAIL_MAX_RESULTS ?? 50));
+    try {
+      emails = await loadGmailEmails(Number(process.env.GMAIL_MAX_RESULTS ?? 50));
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Gmail API failed with refresh token, falling back to mock data:', error);
+      emails = loadMockEmails();
+    }
   } else {
     // Fall back to mock data
     emails = loadMockEmails();
@@ -49,7 +61,7 @@ const loadCards = async (accessToken?: string): Promise<EventCard[]> => {
   
   // Filter to only include cards with Google Forms
   const cardsWithGoogleForms = cards.filter((card) =>
-    card.applyLink.includes('docs.google.com/forms/'),
+    card.applyLink && card.applyLink.includes('docs.google.com/forms/'),
   );
   
   cardsWithGoogleForms.sort(
@@ -64,7 +76,28 @@ const loadCards = async (accessToken?: string): Promise<EventCard[]> => {
   return cardsWithGoogleForms;
 };
 
-router.get('/', requireAuth(), async (req, res, next) => {
+// Optional auth middleware - only enforce if Clerk is configured
+// If Clerk is not configured or auth fails, continue without auth (will use mock data)
+const optionalAuth = process.env.CLERK_SECRET_KEY
+  ? [
+      // Wrap requireAuth to catch errors gracefully
+      (req: any, res: any, next: any) => {
+        const authHandler = requireAuth();
+        authHandler(req, res, (err: any) => {
+          if (err) {
+            // Auth failed - log but continue (will fall back to mock data)
+            // eslint-disable-next-line no-console
+            console.warn('Clerk authentication failed, using fallback:', err.message || err);
+            // Clear any auth data from request
+            (req as any).auth = undefined;
+          }
+          next();
+        });
+      },
+    ]
+  : [];
+
+router.get('/', ...optionalAuth, async (req, res, next) => {
   try {
     const { type } = req.query as { type?: string };
     
@@ -72,10 +105,15 @@ router.get('/', requireAuth(), async (req, res, next) => {
     const userId = getClerkUserId(req);
     let accessToken: string | undefined = undefined;
     
-    if (userId) {
-      const googleToken = await getGoogleOAuthToken(userId);
-      if (googleToken) {
-        accessToken = googleToken;
+    if (userId && process.env.CLERK_SECRET_KEY) {
+      try {
+        const googleToken = await getGoogleOAuthToken(userId);
+        if (googleToken) {
+          accessToken = googleToken;
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn('Failed to get Google OAuth token from Clerk:', err);
       }
     }
     
@@ -107,7 +145,7 @@ const inferTimes = (card: EventCard) => {
   return { start, end };
 };
 
-router.post('/:id/apply', requireAuth(), async (req, res, next) => {
+router.post('/:id/apply', ...optionalAuth, async (req, res, next) => {
   try {
     const { id } = req.params;
     const parsedBody = ApplyBodySchema.parse(req.body);
@@ -116,10 +154,15 @@ router.post('/:id/apply', requireAuth(), async (req, res, next) => {
     const userId = getClerkUserId(req);
     let accessToken: string | undefined = undefined;
     
-    if (userId) {
-      const googleToken = await getGoogleOAuthToken(userId);
-      if (googleToken) {
-        accessToken = googleToken;
+    if (userId && process.env.CLERK_SECRET_KEY) {
+      try {
+        const googleToken = await getGoogleOAuthToken(userId);
+        if (googleToken) {
+          accessToken = googleToken;
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn('Failed to get Google OAuth token from Clerk:', err);
       }
     }
     

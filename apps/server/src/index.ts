@@ -6,10 +6,12 @@ import dotenv from 'dotenv';
 import { clerkMiddleware, requireAuth } from '@clerk/express';
 import cardsRouter from './routes/cards';
 
-// Load .env from project root (two levels up from apps/server/src)
-// This works regardless of where the process is started from
-const rootEnv = path.resolve(__dirname, '../../.env');
-dotenv.config({ path: rootEnv });
+// Load environment variables from both the repository root and the server folder
+// Order matters: root .env first, then apps/server/.env to allow overrides
+const repoRootEnv = path.resolve(__dirname, '../../../.env'); // CWD: apps/server/src → ../../../ → project root
+dotenv.config({ path: repoRootEnv });
+const serverEnv = path.resolve(__dirname, '../.env'); // apps/server/.env
+dotenv.config({ path: serverEnv });
 
 const app = express();
 app.use(cors());
@@ -18,12 +20,33 @@ app.use(morgan('dev'));
 
 // Initialize Clerk middleware
 const clerkSecretKey = process.env.CLERK_SECRET_KEY;
-if (clerkSecretKey) {
-  app.use(clerkMiddleware({ secretKey: clerkSecretKey }));
+const clerkPublishableKey = process.env.CLERK_PUBLISHABLE_KEY || process.env.VITE_CLERK_PUBLISHABLE_KEY;
+if (clerkSecretKey && clerkPublishableKey) {
+  app.use(
+    clerkMiddleware({
+      secretKey: clerkSecretKey,
+      publishableKey: clerkPublishableKey,
+      // Don't require auth on all routes - let routes handle it individually
+      onError: (err) => {
+        // eslint-disable-next-line no-console
+        console.error('Clerk middleware error:', err);
+      },
+    }),
+  );
+} else {
+  // eslint-disable-next-line no-console
+  console.warn('CLERK_SECRET_KEY or CLERK_PUBLISHABLE_KEY not set - authentication will be disabled');
 }
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', time: new Date().toISOString() });
+});
+
+// Sign out endpoint - clears any server-side session data
+app.post('/api/auth/signout', ...(process.env.CLERK_SECRET_KEY ? [requireAuth()] : []), (_req, res) => {
+  // Clerk handles sign out on the client side, but we can clear any server-side cache here
+  // In a real app, you might want to invalidate tokens, clear sessions, etc.
+  res.json({ status: 'ok', message: 'Signed out successfully' });
 });
 
 app.use('/api/cards', cardsRouter);

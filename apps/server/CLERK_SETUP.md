@@ -85,11 +85,34 @@ If using custom credentials:
 
 ## Note on OAuth Token Access
 
-Clerk stores OAuth tokens securely. The current implementation attempts to retrieve the Google OAuth token from the user's external account. If this doesn't work, you may need to:
+Clerk stores OAuth tokens securely. The updated implementation in `apps/server/src/services/clerkAuth.ts` includes:
 
-1. Use Clerk's backend API to access tokens (check Clerk documentation)
-2. Or configure a JWT template that includes the OAuth token
-3. Or use Clerk's token exchange features
+1. **Enhanced token extraction** - Checks multiple possible token locations
+2. **Detailed logging** - Shows exactly where the system is looking for tokens
+3. **Debug output** - Logs the structure of Clerk's external account object to help identify where tokens are stored
 
-Check Clerk's latest documentation for the recommended approach to access OAuth provider tokens.
+### If tokens aren't accessible via API:
 
+Clerk may require one of the following approaches:
+
+1. **JWT Templates**: Configure a custom JWT template in Clerk Dashboard that includes the OAuth token
+2. **Token Exchange**: Use Clerk's token exchange API to get provider tokens
+3. **User Impersonation**: Use Clerk's user impersonation features
+4. **Backend API**: Use Clerk's Backend API with proper scopes
+
+Check Clerk's latest documentation for the recommended approach:
+
+- https://clerk.com/docs/backend-requests/resources/users
+- https://clerk.com/docs/integrations/oauth
+
+### Debugging Token Extraction
+
+When you sign in with Google, check your server logs for:
+
+```
+[Clerk] Fetching Google OAuth token for user user_xxx
+[Clerk] Found Google account: eac_xxx (your@email.com)
+[Clerk] External account object keys: [id, provider, emailAddress, ...]
+```
+
+If the token isn't found, the logs will show the full structure of the external account object, which you can use to update the token extraction logic in `clerkAuth.ts`.

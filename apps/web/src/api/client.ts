@@ -34,3 +34,12 @@ export const markApplied = async (id: string, token?: string | null): Promise<Ap
   );
   return data;
 };
+
+export const signOut = async (token?: string | null): Promise<{ status: string; message: string }> => {
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+  const { data } = await apiClient.post<{ status: string; message: string }>('/api/auth/signout', {}, { headers });
+  return data;
+};

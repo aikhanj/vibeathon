@@ -8,7 +8,9 @@
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/index.js",
     "lint": "cross-env ESLINT_USE_FLAT_CONFIG=false eslint \"src/**/*.{ts,tsx}\"",
-    "test": "vitest run"
+    "test": "vitest run",
+    "get-refresh-token": "ts-node scripts/get-refresh-token.ts",
+    "generate-gmail-token": "node scripts/generate-refresh-token.js"
   },
   "dependencies": {
     "@clerk/express": "^1.0.0",
@@ -28,6 +30,7 @@
     "@typescript-eslint/parser": "^8.13.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3",
     "vitest": "^1.1.3"

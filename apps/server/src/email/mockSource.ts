@@ -23,21 +23,40 @@ export const loadMockEmails = (): NormalizedEmail[] => {
     return cachedEmails;
   }
 
-  const filePath = process.env.MOCK_EMAIL_PATH
-    ? path.resolve(process.cwd(), process.env.MOCK_EMAIL_PATH)
-    : path.resolve(process.cwd(), DEFAULT_DATA_PATH);
+  let filePath: string;
+  if (process.env.MOCK_EMAIL_PATH) {
+    filePath = path.resolve(process.cwd(), process.env.MOCK_EMAIL_PATH);
+  } else {
+    // Resolve from server src directory: apps/server/src -> ../../../data/mockEmails.json
+    filePath = path.resolve(__dirname, '../../../data/mockEmails.json');
+  }
 
-  const buffer = fs.readFileSync(filePath, 'utf-8');
-  const rawItems = JSON.parse(buffer) as RawEmail[];
+  // Check if file exists, if not return empty array
+  if (!fs.existsSync(filePath)) {
+    // eslint-disable-next-line no-console
+    console.warn(`[Mock] Mock emails file not found at ${filePath}, returning empty array`);
+    cachedEmails = [];
+    return cachedEmails;
+  }
 
-  cachedEmails = rawItems.map((item, index) => ({
-    id: item.id ?? `mock-${index}`,
-    from: item.from ?? 'Unknown Sender',
-    subject: item.subject ?? 'Untitled',
-    body: item.body ?? '',
-    receivedAt: item.receivedAt ?? new Date().toISOString(),
-    links: extractLinks(item.body ?? ''),
-  }));
+  try {
+    const buffer = fs.readFileSync(filePath, 'utf-8');
+    const rawItems = JSON.parse(buffer) as RawEmail[];
 
-  return cachedEmails;
+    cachedEmails = rawItems.map((item, index) => ({
+      id: item.id ?? `mock-${index}`,
+      from: item.from ?? 'Unknown Sender',
+      subject: item.subject ?? 'Untitled',
+      body: item.body ?? '',
+      receivedAt: item.receivedAt ?? new Date().toISOString(),
+      links: extractLinks(item.body ?? ''),
+    }));
+
+    return cachedEmails;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(`[Mock] Error loading mock emails from ${filePath}:`, error);
+    cachedEmails = [];
+    return cachedEmails;
+  }
 };

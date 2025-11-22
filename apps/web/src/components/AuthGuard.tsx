@@ -1,4 +1,4 @@
-import { useAuth, SignInButton } from '@clerk/clerk-react';
+import { useAuth, SignInButton, SignOutButton } from '@clerk/clerk-react';
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
@@ -56,6 +56,15 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
     );
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <SignOutButton>
+        <button className="fixed top-4 right-4 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20">
+          Sign Out
+        </button>
+      </SignOutButton>
+    </>
+  );
 };
 

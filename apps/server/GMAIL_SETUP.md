@@ -28,53 +28,31 @@ To replace mock email data with real Gmail emails, you need to set up OAuth2 cre
 
 ## Step 3: Get Refresh Token
 
-You need to obtain a refresh token using the OAuth2 flow. Here's a quick way using Node.js:
+### Option A: Use the Automated Script (Recommended)
 
-```javascript
-// Run this once to get your refresh token
-const { google } = require('googleapis');
-const readline = require('readline');
+1. Make sure `GMAIL_CLIENT_ID` and `GMAIL_CLIENT_SECRET` are in your `.env` file
+2. Run the script:
+   ```bash
+   cd apps/server
+   pnpm ts-node scripts/get-refresh-token.ts
+   ```
+3. Follow the instructions:
+   - Visit the URL printed in the console
+   - Sign in with your Google account
+   - Grant permission for Gmail read-only access
+   - Copy the authorization code from the redirect URL
+   - Paste it when prompted
+   - Copy the refresh token to your `.env` file
 
-const oauth2Client = new google.auth.OAuth2(
-  'YOUR_CLIENT_ID',
-  'YOUR_CLIENT_SECRET',
-  'http://localhost:4000/oauth2callback'
-);
+### Option B: Use OAuth 2.0 Playground (Alternative)
 
-const scopes = ['https://www.googleapis.com/auth/gmail.readonly'];
-
-const url = oauth2Client.generateAuthUrl({
-  access_type: 'offline',
-  scope: scopes,
-});
-
-console.log('Visit this URL:', url);
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-rl.question('Enter the code from the callback URL: ', (code) => {
-  oauth2Client.getToken(code, (err, token) => {
-    if (err) {
-      console.error('Error getting token:', err);
-      return;
-    }
-    console.log('Refresh Token:', token.refresh_token);
-    console.log('Access Token:', token.access_token);
-    rl.close();
-  });
-});
-```
-
-Or use an online OAuth2 playground like [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/):
-1. Click the gear icon (⚙️) and check "Use your own OAuth credentials"
-2. Enter your Client ID and Client Secret
-3. Select "Gmail API v1" > "https://www.googleapis.com/auth/gmail.readonly"
-4. Click "Authorize APIs" and sign in
-5. Click "Exchange authorization code for tokens"
-6. Copy the **Refresh token**
+1. Go to [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/)
+2. Click the gear icon (⚙️) and check "Use your own OAuth credentials"
+3. Enter your Client ID and Client Secret
+4. Select "Gmail API v1" > "https://www.googleapis.com/auth/gmail.readonly"
+5. Click "Authorize APIs" and sign in
+6. Click "Exchange authorization code for tokens"
+7. Copy the **Refresh token**
 
 ## Step 4: Configure Environment Variables
 
@@ -105,4 +83,3 @@ GMAIL_MAX_RESULTS=50  # Optional: max number of emails to fetch (default: 50)
 ## Fallback to Mock Data
 
 If you don't set up Gmail credentials, the system will automatically use mock data from `data/mockEmails.json`. This allows you to develop and test without Gmail setup.
-
